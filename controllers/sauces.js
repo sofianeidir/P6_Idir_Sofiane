@@ -7,10 +7,10 @@ exports.createSauces = (req, res, next) => {
     delete saucesObject._id;
      const sauce = new Sauces({
          ...saucesObject,
-        //  likes: 0,
-        //  dislikes: 0,
-        //  usersDisliked: [],
-        //  usersLiked: [],
+          likes: 0,
+          dislikes: 0,
+          usersDisliked: [],
+          usersLiked: [],
          imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
      });
      sauce.save()
