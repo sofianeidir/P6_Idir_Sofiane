@@ -14,7 +14,7 @@ exports.createSauces = (req, res, next) => {
          imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
      });
      sauce.save()
-     .then(() => res.status(201).json({ message: ' Sauce enregistré'}))
+     .then(() => res.status(201).json({ message: 'Sauce enregistré'}))
      .catch(error => res.status(400).json({ error }));
   }
 
@@ -34,7 +34,7 @@ exports.deleteSauces = (req, res, next) => {
             }
             if (sauce.userId !== req.auth.userId) {
                 return res.status(401).json({
-                    error: new Error(' Requête non autorisée')
+                    error: new Error('Requête non autorisée')
                 });
             }
             Sauces.deleteOne({ _id: req.params.id })
@@ -63,7 +63,7 @@ exports.likeSauce = (req, res, next) => {
   // 1. user likes a sauce for the first time (like === 1)
   // pushing the userId to usersLiked array; incrementing likes
   if (like === 1) {
-    Sauce.updateOne(
+    Sauces.updateOne(
       { _id: sauceId },
       {
         $inc: { likes: like },
@@ -77,7 +77,7 @@ exports.likeSauce = (req, res, next) => {
   // 2. user DISlikes a sauce for the first time (like === -1)
   // pushing the userId to usersLiked array; one less like.
   else if (like === -1) {
-    Sauce.updateOne(
+    Sauces.updateOne(
       { _id: sauceId },
       {
         $inc: { dislikes: -1 * like },
@@ -90,10 +90,10 @@ exports.likeSauce = (req, res, next) => {
   // 3. User changes his mind
   // 3.1. user is taking back his like :
   else {
-    Sauce.findOne({ _id: sauceId })
+    Sauces.findOne({ _id: sauceId })
       .then((sauce) => {
         if (sauce.usersLiked.includes(userId)) {
-          Sauce.updateOne(
+          Sauces.updateOne(
             { _id: sauceId },
             { $pull: { usersLiked: userId }, $inc: { likes: -1 } }
           )
@@ -103,7 +103,7 @@ exports.likeSauce = (req, res, next) => {
             .catch((error) => res.status(500).json({ error }));
           // 3.2 user is changing his mind on his dislike
         } else if (sauce.usersDisliked.includes(userId)) {
-          Sauce.updateOne(
+          Sauces.updateOne(
             { _id: sauceId },
             {
               $pull: { usersDisliked: userId },
