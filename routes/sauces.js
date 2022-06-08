@@ -7,7 +7,7 @@ const multer = require('../middleware/multer-config');
 
 // Routes avec les métiers 
 router.post('/', auth, multer, saucesCtrl.createSauces);
-router.put('/:id', auth, saucesCtrl.modifySauces);
+router.put('/:id', auth, multer, saucesCtrl.modifySauces);
 router.delete('/:id', auth, saucesCtrl.deleteSauces)
 router.get('/:id', auth, saucesCtrl.getOneSauce);
 router.get('/', auth, saucesCtrl.getAllSauces);
